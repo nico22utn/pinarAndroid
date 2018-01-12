@@ -11,8 +11,8 @@ import retrofit2.http.Query;
  */
 
 public interface RetrofitAPI {
-    String ENDPOINT="http://localhost:8080/historialclinioo/find?dni=";
+    static String ENDPOINT="http://localhost:8080/historialClinioo/";
 
     @GET("find")
-    Call<DTOPantalla> getHistorial(@Query("dni")int dni);
+    Call<DTOPantalla> getHistorial(@Query("dni")String dni);
 }
