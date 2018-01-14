@@ -6,15 +6,9 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.nicolas.pinar.R;
 import com.nicolas.pinar.model.DTOPantalla;
-import com.nicolas.pinar.rest.PinarUtils;
-import com.nicolas.pinar.rest.RetrofitAPI;
-import com.nicolas.pinar.rest.RetrofitCallUtil;
-
-import java.util.List;
+import com.nicolas.pinar.rest.ApiService;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,33 +16,38 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ListInformesActivity extends AppCompatActivity implements RetrofitCallUtil.ApiCallbacksListener<DTOPantalla>{
+public class ListInformesActivity extends AppCompatActivity {
 
-    public static String dni;
-    TextView textView2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_informes);
-        Intent i=getIntent();
+        Intent i = getIntent();
         String dni = i.getStringExtra("dni");
-        textView2=(TextView) findViewById(R.id.textView2);
-        textView2.setText(dni);
-        PinarUtils.getPaymentMethods(this,dni);
+        getHistoriales(dni);
     }
 
-    @Override
-    public void onWillStartLoading() {
-        Toast.makeText(ListInformesActivity.this, "La llamada en espera", Toast.LENGTH_LONG).show();
+    public void getHistoriales(String dni){
+        //Inicio Llamada API Pinar Plaza
+        final String url="http://192.168.1.36:8080/historialClinico/";
+        Retrofit retrofit= new Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build();
+        //Instanciar Interface
+        ApiService api=retrofit.create(ApiService.class);
+        //Llamada Asincrona
+        Call<DTOPantalla> call= api.getHistorial(dni);
+        call.enqueue(new Callback<DTOPantalla>() {
+            @Override
+            public void onResponse(Call<DTOPantalla> call, Response<DTOPantalla> response) {
+                //Instanciar Recicler View
+                Toast.makeText(ListInformesActivity.this, "Llamada exitosa.", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<DTOPantalla> call, Throwable t) {
+                Toast.makeText(ListInformesActivity.this, "Error. Llamada a la APi sin exito.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
-    @Override
-    public void onSuccess(DTOPantalla responseBody) {
-        Toast.makeText(ListInformesActivity.this, "La llamada a la api anduvo correctamente", Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onFailure() {
-        Toast.makeText(ListInformesActivity.this, "Ups! Problemas en la llamada", Toast.LENGTH_LONG).show();
-    }
 }
