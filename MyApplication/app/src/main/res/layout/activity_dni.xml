@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.nicolas.pinar.view.DniActivity">
+    tools:context="com.nicolas.pinar.view.ListInformesActivity">
 
     <TextView
         android:text="Ingrese su dni:"
