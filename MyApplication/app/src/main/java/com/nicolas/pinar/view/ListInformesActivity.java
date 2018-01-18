@@ -3,12 +3,16 @@ package com.nicolas.pinar.view;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nicolas.pinar.R;
 import com.nicolas.pinar.model.DTOPantalla;
 import com.nicolas.pinar.rest.ApiService;
+import com.nicolas.pinar.utils.PinarAdapter;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -18,12 +22,17 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ListInformesActivity extends AppCompatActivity {
 
+    RecyclerView recyclerView;
+    public String dni;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_informes);
         Intent i = getIntent();
         String dni = i.getStringExtra("dni");
+        recyclerView = (RecyclerView) findViewById(R.id.informes_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(ListInformesActivity.this));
+        this.dni=dni;
         getHistoriales(dni);
     }
 
@@ -39,7 +48,11 @@ public class ListInformesActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<DTOPantalla> call, Response<DTOPantalla> response) {
                 //Instanciar Recicler View
-                Toast.makeText(ListInformesActivity.this, "Llamada exitosa.", Toast.LENGTH_SHORT).show();
+                PinarAdapter adapter = new PinarAdapter((DTOPantalla) response.body().getInformes(), ListInformesActivity.this);
+                recyclerView.setAdapter(adapter);
+
+                //Mostrar el recycler view, ocultar el loading
+                recyclerView.setVisibility(View.VISIBLE);
             }
 
             @Override
