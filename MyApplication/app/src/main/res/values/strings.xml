@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Pinar</string>
+    <string name="image_transition">informesTransition</string>
 </resources>
