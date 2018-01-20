@@ -47,8 +47,7 @@ public class PinarAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final String informe=dtoPantalla.getInformes().get(position);
         final PinarViewHolder viewHolder=(PinarViewHolder) holder;
-        //Bitmap bmp= BitmapFactory.decodeByteArray((byte[]) dtoPantalla.getFoto(),0, ((byte[]) dtoPantalla.getFoto()).length);
-        //imageView.setImageBitmap(bmp);
+
         viewHolder.informeTextView.setText(informe);
         viewHolder.container.setOnClickListener(new View.OnClickListener(){
 
@@ -58,7 +57,6 @@ public class PinarAdapter extends RecyclerView.Adapter {
                 Intent intent = new Intent(context, InformeDetailActivity.class);
                 intent.putExtra("foto", (byte [])dtoPantalla.getFoto());
                 intent.putExtra("informe", informe);
-
                 //Preparacion de la animacion
                 // Obtenemos el nombre de la transicion
                 String transitionName = context.getString(R.string.image_transition);
