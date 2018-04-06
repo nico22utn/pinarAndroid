@@ -55,17 +55,18 @@ public class PinarAdapter extends RecyclerView.Adapter {
             public void onClick(View v) {
                 //Creamos el intent
                 Intent intent = new Intent(context, InformeDetailActivity.class);
-                intent.putExtra("foto", (byte [])dtoPantalla.getFoto());
+                intent.putExtra("foto", dtoPantalla.getFoto().toString().getBytes());
                 intent.putExtra("informe", informe);
                 //Preparacion de la animacion
                 // Obtenemos el nombre de la transicion
                 String transitionName = context.getString(R.string.image_transition);
 
                 //Creamos la animacion
-                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((ListInformesActivity) context, viewHolder.informeImageView, transitionName);
+                //ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((ListInformesActivity) context, viewHolder.informeImageView, transitionName);
 
                 //Realizamos la transicion
-                ActivityCompat.startActivity((ListInformesActivity) context, intent, options.toBundle());
+                //ActivityCompat.startActivity((ListInformesActivity) context, intent, options.toBundle());
+                ActivityCompat.startActivity((ListInformesActivity) context,intent,null);
             }
         });
     }
@@ -85,6 +86,7 @@ public class PinarAdapter extends RecyclerView.Adapter {
 
             container = (RelativeLayout) itemView.findViewById(R.id.container);
             informeTextView = (TextView) itemView.findViewById(R.id.informe_text);
+            informeImageView= (CircleImageView) itemView.findViewById(R.id.foto_image);
         }
     }
 }

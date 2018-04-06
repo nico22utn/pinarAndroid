@@ -13,6 +13,10 @@ import com.nicolas.pinar.R;
 import com.nicolas.pinar.model.DTOPantalla;
 import com.nicolas.pinar.rest.ApiService;
 import com.nicolas.pinar.utils.PinarAdapter;
+import com.nicolas.pinar.utils.PinarUtis;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,10 +31,10 @@ public class ListInformesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_informes);
+        setContentView(R.layout.activity_main);
         Intent i = getIntent();
         String dni = i.getStringExtra("dni");
-        recyclerView = (RecyclerView) findViewById(R.id.informes_list);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(ListInformesActivity.this));
         this.dni=dni;
         getHistoriales(dni);
@@ -38,8 +42,7 @@ public class ListInformesActivity extends AppCompatActivity {
 
     public void getHistoriales(String dni){
         //Inicio Llamada API Pinar Plaza
-        final String url="http://192.168.1.36:8080/historialClinico/";
-        Retrofit retrofit= new Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build();
+        Retrofit retrofit= new Retrofit.Builder().baseUrl(PinarUtis.URL_CONEXION).addConverterFactory(GsonConverterFactory.create()).build();
         //Instanciar Interface
         ApiService api=retrofit.create(ApiService.class);
         //Llamada Asincrona
@@ -48,7 +51,7 @@ public class ListInformesActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<DTOPantalla> call, Response<DTOPantalla> response) {
                 //Instanciar Recicler View
-                PinarAdapter adapter = new PinarAdapter((DTOPantalla) response.body().getInformes(), ListInformesActivity.this);
+                PinarAdapter adapter = new PinarAdapter( response.body(), ListInformesActivity.this);
                 recyclerView.setAdapter(adapter);
 
                 //Mostrar el recycler view, ocultar el loading
