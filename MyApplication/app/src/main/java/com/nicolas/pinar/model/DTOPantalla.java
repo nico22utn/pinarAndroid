@@ -1,5 +1,6 @@
 package com.nicolas.pinar.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,53 +8,44 @@ import java.util.List;
  */
 
 public class DTOPantalla {
+    private String nombrePaciente;
+    private String dniPaciente;
+    private String fotoPaciente;
+    private List<ListInforme> listInformes= null;
 
-    private String dni;
-    private List<String> informes = null;
-    private Object foto;
+    public DTOPantalla(){
 
-    /**
-     * No args constructor for use in serialization
-     *
-     */
-    public DTOPantalla() {
     }
 
-    /**
-     *
-     * @param informes
-     * @param foto
-     * @param dni
-     */
-    public DTOPantalla(String dni, List<String> informes, Object foto) {
-        super();
-        this.dni = dni;
-        this.informes = informes;
-        this.foto = foto;
+    public String getNombrePaciente() {
+        return nombrePaciente;
     }
 
-    public String getDni() {
-        return dni;
+    public void setNombrePaciente(String nombrePaciente) {
+        this.nombrePaciente = nombrePaciente;
     }
 
-    public void setDni(String dni) {
-        this.dni = dni;
+    public String getDniPaciente() {
+        return dniPaciente;
     }
 
-    public List<String> getInformes() {
-        return informes;
+    public void setDniPaciente(String dniPaciente) {
+        this.dniPaciente = dniPaciente;
     }
 
-    public void setInformes(List<String> informes) {
-        this.informes = informes;
+    public String getFotoPaciente() {
+        return fotoPaciente;
     }
 
-    public Object getFoto() {
-        return foto;
+    public void setFotoPaciente(String fotoPaciente) {
+        this.fotoPaciente = fotoPaciente;
     }
 
-    public void setFoto(Object foto) {
-        this.foto = foto;
+    public List<ListInforme> getListInformes() {
+        return listInformes;
     }
 
+    public void setListInformes(List<ListInforme> listInformes) {
+        this.listInformes = listInformes;
+    }
 }

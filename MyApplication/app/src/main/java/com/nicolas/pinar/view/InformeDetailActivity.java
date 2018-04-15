@@ -15,7 +15,10 @@ import static com.nicolas.pinar.R.id.imageView;
 public class InformeDetailActivity extends AppCompatActivity {
 
     TextView text;
-    public byte[] foto;
+    TextView textMedico;
+    TextView textArea;
+    TextView textPaciente;
+    public String foto;
     public String informe;
     ImageView imageView;
     @Override
@@ -23,12 +26,17 @@ public class InformeDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_informe_detail);
         text=(TextView)findViewById(R.id.informe_detail_text);
-        imageView=(ImageView)findViewById(R.id.foto_image);
+        textMedico=(TextView)findViewById(R.id.medico);
+        textArea=(TextView)findViewById(R.id.area);
+        textPaciente=(TextView)findViewById(R.id.paciente);
+        imageView=(ImageView)findViewById(R.id.foto_paciente);
         Intent intent=getIntent();
-        informe=intent.getStringExtra("informe");
-        foto=intent.getByteArrayExtra("foto");
-        Bitmap bmp= BitmapFactory.decodeByteArray(foto,0, foto.length);
+        foto=intent.getStringExtra("foto");
+        Bitmap bmp= BitmapFactory.decodeByteArray(foto.getBytes(),0, foto.getBytes().length);
         imageView.setImageBitmap(bmp);
         text.setText(informe);
+        textArea.setText(intent.getStringExtra("area"));
+        textMedico.setText(intent.getStringExtra("medico"));
+        textPaciente.setText(intent.getStringExtra("paciente"));
     }
 }

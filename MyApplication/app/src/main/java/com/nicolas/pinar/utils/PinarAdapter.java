@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -17,11 +18,6 @@ import com.nicolas.pinar.R;
 import com.nicolas.pinar.model.DTOPantalla;
 import com.nicolas.pinar.view.InformeDetailActivity;
 import com.nicolas.pinar.view.ListInformesActivity;
-import com.squareup.picasso.Picasso;
-
-import java.io.File;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by User on 15/01/2018.
@@ -44,28 +40,24 @@ public class PinarAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        final String informe=dtoPantalla.getInformes().get(position);
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        final String informe=dtoPantalla.getListInformes().get(position).getInforme();
         final PinarViewHolder viewHolder=(PinarViewHolder) holder;
 
         viewHolder.informeTextView.setText(informe);
+        Bitmap bmp= BitmapFactory.decodeByteArray(dtoPantalla.getFotoPaciente().getBytes(),0,dtoPantalla.getFotoPaciente().getBytes().length);
+        viewHolder.informeImageView.setImageBitmap(bmp);
         viewHolder.container.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
                 //Creamos el intent
                 Intent intent = new Intent(context, InformeDetailActivity.class);
-                intent.putExtra("foto", dtoPantalla.getFoto().toString().getBytes());
+                intent.putExtra("paciente", dtoPantalla.getNombrePaciente());
+                intent.putExtra("foto", dtoPantalla.getFotoPaciente());
                 intent.putExtra("informe", informe);
-                //Preparacion de la animacion
-                // Obtenemos el nombre de la transicion
-                String transitionName = context.getString(R.string.image_transition);
-
-                //Creamos la animacion
-                //ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((ListInformesActivity) context, viewHolder.informeImageView, transitionName);
-
-                //Realizamos la transicion
-                //ActivityCompat.startActivity((ListInformesActivity) context, intent, options.toBundle());
+                intent.putExtra("medico",dtoPantalla.getListInformes().get(position).getMedico().getNombreMedico());
+                intent.putExtra("area",dtoPantalla.getListInformes().get(position).getMedico().getAreaMedico());
                 ActivityCompat.startActivity((ListInformesActivity) context,intent,null);
             }
         });
@@ -73,12 +65,12 @@ public class PinarAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return dtoPantalla.getInformes().size();
+        return dtoPantalla.getListInformes().size();
     }
     static class PinarViewHolder extends RecyclerView.ViewHolder {
 
         RelativeLayout container;
-        CircleImageView informeImageView;
+        ImageView informeImageView;
         TextView informeTextView;
 
         public PinarViewHolder(View itemView) {
@@ -86,7 +78,7 @@ public class PinarAdapter extends RecyclerView.Adapter {
 
             container = (RelativeLayout) itemView.findViewById(R.id.container);
             informeTextView = (TextView) itemView.findViewById(R.id.informe_text);
-            informeImageView= (CircleImageView) itemView.findViewById(R.id.foto_image);
+            informeImageView= (ImageView) itemView.findViewById(R.id.foto_paciente);
         }
     }
 }
